@@ -51,34 +51,43 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ],
                 )),
-            Column(
-              children: [
-                Card(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const Icon(
-                        Icons.safety_check,
-                        size: 40,
-                      ),
-                      const Text(
-                        'Study Lessons',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 21,
-                        ),
-                      ),
-                      Checkbox(
-                          value: ischeck,
-                          onChanged: (val) => {
-                                setState(() {
-                                  ischeck = val!;
-                                })
-                              })
-                    ],
-                  ),
-                )
-              ],
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Icon(
+                                  Icons.safety_check,
+                                  size: 40,
+                                ),
+                                const Text(
+                                  'Study Lessons',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 21,
+                                  ),
+                                ),
+                                Checkbox(
+                                    value: ischeck,
+                                    onChanged: (val) => {
+                                          setState(() {
+                                            ischeck = val!;
+                                          })
+                                        })
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
             )
           ]),
         ),

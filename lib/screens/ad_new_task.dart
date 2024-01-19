@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:todo/constans/tasktype.dart';
+import 'package:todo/model/task.dart';
 
 class AddNew extends StatefulWidget {
-  const AddNew({super.key});
+  const AddNew({super.key, required this.addnewtask});
+  final void Function(Task newtask) addnewtask;
 
   @override
   State<AddNew> createState() => _AddNewState();
 }
 
 class _AddNewState extends State<AddNew> {
+  TextEditingController titlecontruler = TextEditingController();
+  TextEditingController datecontruler = TextEditingController();
+  TextEditingController timecontruler = TextEditingController();
+  TextEditingController notecontruler = TextEditingController();
+  Tasktype tasktype = Tasktype.note;
   @override
   Widget build(BuildContext context) {
     double dublewidth = MediaQuery.of(context).size.width;
@@ -50,11 +58,13 @@ class _AddNewState extends State<AddNew> {
                 const Padding(
                     padding: EdgeInsets.only(top: 10),
                     child: Text('Task title')),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: TextField(
-                    decoration:
-                        InputDecoration(filled: true, fillColor: Colors.white),
+                    controller: titlecontruler,
+                    decoration: const InputDecoration(
+                        filled: true, fillColor: Colors.white),
                   ),
                 ),
                 Padding(
@@ -69,6 +79,9 @@ class _AddNewState extends State<AddNew> {
                               const SnackBar(
                                   duration: Duration(microseconds: 300),
                                   content: Text('kjdsajdikslj')));
+                          setState(() {
+                            tasktype = Tasktype.note;
+                          });
                         },
                         child: Image.asset('lib/assets/images/Category.png'),
                       ),
@@ -78,6 +91,9 @@ class _AddNewState extends State<AddNew> {
                               const SnackBar(
                                   duration: Duration(microseconds: 300),
                                   content: Text('kjdsajdikslj')));
+                          setState(() {
+                            tasktype = Tasktype.calendar;
+                          });
                         },
                         child: Image.asset('lib/assets/images/Category1.png'),
                       ),
@@ -87,24 +103,29 @@ class _AddNewState extends State<AddNew> {
                               const SnackBar(
                                   duration: Duration(microseconds: 300),
                                   content: Text('kjdsajdikslj')));
+                          setState(() {
+                            tasktype = Tasktype.contest;
+                          });
                         },
                         child: Image.asset('lib/assets/images/Category2.png'),
                       ),
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 20),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
                   child: Row(
                     children: [
                       Expanded(
                         child: Column(
                           children: [
-                            Text('Date'),
+                            const Text('Date'),
                             Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: TextField(
-                                  decoration: InputDecoration(
+                                  controller: datecontruler,
+                                  decoration: const InputDecoration(
                                       filled: true, fillColor: Colors.white),
                                 ))
                           ],
@@ -113,11 +134,13 @@ class _AddNewState extends State<AddNew> {
                       Expanded(
                         child: Column(
                           children: [
-                            Text('Time'),
+                            const Text('Time'),
                             Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
                                 child: TextField(
-                                  decoration: InputDecoration(
+                                  controller: timecontruler,
+                                  decoration: const InputDecoration(
                                       filled: true, fillColor: Colors.white),
                                 ))
                           ],
@@ -128,15 +151,31 @@ class _AddNewState extends State<AddNew> {
                 ),
                 const Padding(
                     padding: EdgeInsets.only(top: 20), child: Text('Note')),
-                const SizedBox(
-                  height: 300,
-                  child: TextField(
-                    expands: true,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                        filled: true, fillColor: Colors.white, isDense: true),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: SizedBox(
+                    height: 300,
+                    child: TextField(
+                      controller: notecontruler,
+                      expands: true,
+                      maxLines: null,
+                      decoration: const InputDecoration(
+                          filled: true, fillColor: Colors.white, isDense: true),
+                    ),
                   ),
-                )
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Task newtask = Task(
+                          title: titlecontruler.text,
+                          description: notecontruler.text,
+                          check: false,
+                          type: tasktype);
+                      widget.addnewtask(newtask);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Save'))
               ],
             ),
           ),

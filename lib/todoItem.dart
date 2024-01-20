@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo/constans/tasktype.dart';
-import 'package:todo/model/task.dart';
+import 'package:todo/model/todo.dart';
 
 class Todoitem extends StatefulWidget {
   const Todoitem({super.key, required this.task});
-  final Task task;
+  final Todo task;
   @override
   State<Todoitem> createState() => _TodoitemState();
 }
@@ -13,24 +12,26 @@ class _TodoitemState extends State<Todoitem> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: widget.task.check == true ? Colors.grey : Colors.white,
+      color: widget.task.completed! ? Colors.grey : Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            widget.task.type == Tasktype.note
-                ? Image.asset('lib/assets/images/Category.png')
-                : widget.task.type == Tasktype.calendar
-                    ? Image.asset('lib/assets/images/Category1.png')
-                    : Image.asset('lib/assets/images/Category2.png'),
+            // widget.task.type == Tasktype.note
+            //     ? Image.asset('lib/assets/images/Category.png')
+            //     : widget.task.type == Tasktype.calendar
+            //         ? Image.asset('lib/assets/images/Category1.png')
+            //         : Image.asset('lib/assets/images/Category2.png'),
+            Image.asset('lib/assets/images/Category2.png'),
+
             Expanded(
               child: Column(
                 children: [
                   Text(
-                    widget.task.title,
+                    widget.task.todo!,
                     style: TextStyle(
-                      decoration: widget.task.check == true
+                      decoration: widget.task.completed == true
                           ? TextDecoration.lineThrough
                           : null,
                       fontWeight: FontWeight.bold,
@@ -38,9 +39,9 @@ class _TodoitemState extends State<Todoitem> {
                     ),
                   ),
                   Text(
-                    widget.task.description,
+                    widget.task.userId!.toString(),
                     style: TextStyle(
-                      decoration: widget.task.check == true
+                      decoration: widget.task.completed == true
                           ? TextDecoration.lineThrough
                           : null,
                     ),
@@ -49,10 +50,10 @@ class _TodoitemState extends State<Todoitem> {
               ),
             ),
             Checkbox(
-                value: widget.task.check,
+                value: widget.task.completed,
                 onChanged: (val) {
                   setState(() {
-                    widget.task.check = val!;
+                    widget.task.completed = val!;
                   });
                 })
           ],

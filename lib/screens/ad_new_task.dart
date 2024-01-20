@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo/constans/tasktype.dart';
 import 'package:todo/model/task.dart';
+import 'package:todo/model/todo.dart';
+import 'package:todo/service/todo_service.dart';
 
 class AddNew extends StatefulWidget {
   const AddNew({super.key, required this.addnewtask});
@@ -15,6 +17,7 @@ class _AddNewState extends State<AddNew> {
   TextEditingController datecontruler = TextEditingController();
   TextEditingController timecontruler = TextEditingController();
   TextEditingController notecontruler = TextEditingController();
+  TodoSercive todoSercive = TodoSercive();
   Tasktype tasktype = Tasktype.note;
   @override
   Widget build(BuildContext context) {
@@ -167,12 +170,13 @@ class _AddNewState extends State<AddNew> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      Task newtask = Task(
-                          title: titlecontruler.text,
-                          description: notecontruler.text,
-                          check: false,
-                          type: tasktype);
-                      widget.addnewtask(newtask);
+                      saveTodo();
+                      // Task newtask = Task(
+                      //     title: titlecontruler.text,
+                      //     description: notecontruler.text,
+                      //     check: false,
+                      //     type: tasktype);
+                      // widget.addnewtask(newtask);
                       Navigator.pop(context);
                     },
                     child: const Text('Save'))
@@ -182,5 +186,14 @@ class _AddNewState extends State<AddNew> {
         ),
       ),
     );
+  }
+
+  void saveTodo() {
+    Todo newtodo = Todo(
+        id: -1,
+        completed: false,
+        todo: titlecontruler.text,
+        userId: int.parse(datecontruler.text));
+    todoSercive.addtodo(newtodo);
   }
 }

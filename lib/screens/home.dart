@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/constans/tasktype.dart';
 import 'package:todo/model/task.dart';
 import 'package:todo/screens/ad_new_task.dart';
+import 'package:todo/service/todo_service.dart';
 import 'package:todo/todoItem.dart';
 
 class Homescreen extends StatefulWidget {
@@ -52,6 +53,8 @@ class HomescreenState extends State<Homescreen> {
 
   @override
   Widget build(BuildContext context) {
+    TodoSercive todoSercive = TodoSercive();
+    todoSercive.getTodos();
     double dublewidth = MediaQuery.of(context).size.width;
     double dubleheight = MediaQuery.of(context).size.height;
     return MaterialApp(
@@ -92,14 +95,22 @@ class HomescreenState extends State<Homescreen> {
               child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                   child: SingleChildScrollView(
-                    child: ListView.builder(
-                        primary: false,
-                        shrinkWrap: true,
-                        itemCount: todo.length,
-                        itemBuilder: (context, index) {
-                          return Todoitem(task: todo[index]);
-                        }),
-                  )),
+                      child: FutureBuilder(
+                          future: todoSercive.getTodos(),
+                          builder: (context, snapshot) {
+                            if (snapshot.data == null) {
+                              return const CircularProgressIndicator();
+                            } else {
+                              return ListView.builder(
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return Todoitem(
+                                        task: snapshot.data![index]);
+                                  });
+                            }
+                          }))),
             ),
             const Padding(
               padding: EdgeInsets.only(left: 20),
@@ -115,12 +126,20 @@ class HomescreenState extends State<Homescreen> {
               child: Padding(
                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                   child: SingleChildScrollView(
-                    child: ListView.builder(
-                        primary: false,
-                        shrinkWrap: true,
-                        itemCount: completed.length,
-                        itemBuilder: (context, index) {
-                          return Todoitem(task: completed[index]);
+                    child: FutureBuilder(
+                        future: todoSercive.getcompletedTodos(),
+                        builder: (context, snapshot) {
+                          if (snapshot.data == null) {
+                            return const CircularProgressIndicator();
+                          } else {
+                            return ListView.builder(
+                                primary: false,
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, index) {
+                                  return Todoitem(task: snapshot.data![index]);
+                                });
+                          }
                         }),
                   )),
             ),
